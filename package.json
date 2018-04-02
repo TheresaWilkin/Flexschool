@@ -1,0 +1,43 @@
+{
+  "name": "graphql-flexschool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "dependencies": {
+    "babel-core": "6.14.0",
+    "bcrypt-nodejs": "^0.0.3",
+    "connect-mongo": "^2.0.1",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "express-graphql": "^0.6.12",
+    "express-jwt": "^5.3.1",
+    "express-session": "^1.15.6",
+    "fs": "0.0.2",
+    "graphql": "^0.13.2",
+    "graphql-date": "^1.0.3",
+    "jwt-decode": "^2.2.0",
+    "moment": "^2.21.0",
+    "mongoose": "^5.0.12",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "react-rangeslider": "^2.2.0"
+  },
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "nodemon server.js",
+    "client": "node start-client.js",
+    "dev": "echo \"This command has been deprecated. Use 'npm start'\" && exit 1",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "concurrently": "3.1.0",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "14.1.0",
+    "eslint-plugin-import": "2.2.0",
+    "eslint-plugin-jsx-a11y": "4.0.0",
+    "eslint-plugin-react": "6.9.0"
+  },
+  "author": "",
+  "license": "ISC"
+}
