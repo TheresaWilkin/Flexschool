@@ -1,14 +1,18 @@
 const graphql = require('graphql');
-const { GraphQLObjectType, GraphQLID } = graphql;
+const { GraphQLObjectType, GraphQLID, GraphQLList } = graphql;
+var GraphQLDate = require('graphql-date')
 
 const UserType = require('./user_type');
 const AssignmentType = require('./assignment_type');
 const StudentType = require('./student_type');
 const SubjectType = require('./subject_type');
+const DayType = require('./day_type');
+const CalendarType = require('./calendar_type');
 
 const Assignments = require('../../services/assignments');
 const Students = require('../../services/students');
 const Subjects = require('../../services/subjects');
+const Dates = require('../../services/dates');
 
 const RootQueryType = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -44,6 +48,26 @@ const RootQueryType = new GraphQLObjectType({
       },
       resolve(parentValue, { id }, req) {
         return Subjects.getSubject(id);
+      }
+    },
+    day: {
+      type: DayType,
+      args: {
+        day: { type: GraphQLDate }
+      },
+      resolve(parentValue, args, req) {
+        return new Promise((resolve, reject) => {
+          resolve({ date: args.day });
+        });
+      }
+    },
+    calendar: {
+      type: CalendarType,
+      args: {
+        startDate: { type: GraphQLDate }
+      },
+      resolve(parentValue, args, req) {
+        return { startDate: args.startDate };
       }
     }
   })

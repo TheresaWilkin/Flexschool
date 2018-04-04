@@ -9,12 +9,14 @@ export default gql`
       pointsAvailable
       student {
         id
+        name
       },
       assignments {
         id
         name
         pointsEarned
         pointsAvailable
+        graded
       }
     }
   }

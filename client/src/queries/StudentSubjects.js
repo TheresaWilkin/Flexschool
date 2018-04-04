@@ -10,6 +10,8 @@ export default gql`
         subjects {
           id
           name
+          pointsEarned
+          pointsAvailable
         }
       }
     }

@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-import { Query } from 'react-apollo';
 import query from '../queries/GradebookSubject';
-import Errors from './Errors';
+import { Link } from 'react-router-dom';
+import AddAssignmentDialogue from './AddAssignmentDialogue';
+import QueryHandler from './QueryHandler';
+
+import Tooltip from 'material-ui/Tooltip';
+import Typography from 'material-ui/Typography';
+import Button from 'material-ui/Button';
+import Icon from 'material-ui/Icon';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
 import ListSubheader from 'material-ui/List/ListSubheader';
 import List, { ListItem, ListItemText } from 'material-ui/List';
-import { Link } from 'react-router-dom';
-import Button from 'material-ui/Button';
-import Icon from 'material-ui/Icon';
-import AddAssignmentDialogue from './AddAssignmentDialogue';
-import Tooltip from 'material-ui/Tooltip';
 
 const styles = theme => ({
   root: theme.mixins.gutters({
@@ -61,17 +62,18 @@ class GradebookSubject extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Query query={query} variables={this.props.match.params}>
-        {({ data, error, loading }) => {
-          if (loading) { return <p>Loading...</p>; }
-          if (error) { return <Errors error={error} />; }
+      <QueryHandler query={query} variables={this.props.match.params}>
+        {({ data }) => {
           const { subject } = data;
           const { name, pointsEarned, pointsAvailable, assignments, student } = subject;
           return (
             <div>
-              {this.pointsAvailable ? <p>{percentage(pointsEarned, pointsAvailable)}%</p> : <p/>}
+              <Grid item xs={12}>
+                <Typography variant="headline">{student.name}</Typography>
+                <Typography variant="body1"><em>{pointsAvailable ? `${percentage(pointsEarned, pointsAvailable)}%` : ''}</em></Typography>
+              </Grid>
               <Grid container justify="space-between">
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={6}>
                   <Paper className={classes.root} elevation={4}>
                     <List subheader={<ListSubheader component="div">{name} ({pointsEarned}/{pointsAvailable} points)</ListSubheader>}>
                       {assignments.length ? assignments.map(item => this.renderListItem(item)) : (
@@ -104,7 +106,7 @@ class GradebookSubject extends Component {
             </div>
           );
         }}
-      </Query>
+      </QueryHandler>
     );
   }
 }

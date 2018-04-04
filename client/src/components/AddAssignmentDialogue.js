@@ -25,14 +25,11 @@ const styles = theme => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: 200,
-  },
-  menu: {
-    width: 200,
-  },
+    width: '250px'
+  }
 });
 
-class DeleteAssignmentDialogue extends React.Component {
+class AddAssignmentDialogue extends React.Component {
   state = {
     name: '',
     pointsAvailable: 100,
@@ -131,6 +128,7 @@ class DeleteAssignmentDialogue extends React.Component {
         >
           <DialogTitle id="add-assignment">{edit ? 'Edit Assignment' : 'Add Assignment'}</DialogTitle>
           <DialogContent className={classes.container}>
+
             <TextField
               id="name"
               label="Name"
@@ -189,4 +187,4 @@ class DeleteAssignmentDialogue extends React.Component {
   }
 }
 
-export default withMobileDialog()(withStyles(styles)(DeleteAssignmentDialogue));
+export default withMobileDialog()(withStyles(styles)(AddAssignmentDialogue));

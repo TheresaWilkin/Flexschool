@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Query } from "react-apollo";
 import { withRouter } from 'react-router-dom';
 import { withStyles } from 'material-ui/styles';
 import query from '../queries/Student';
 import Grid from 'material-ui/Grid';
-import Errors from './Errors';
 import Typography from 'material-ui/Typography';
 import List, {
   ListItem,
@@ -13,6 +11,8 @@ import List, {
 } from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 import CreateSubject from './CreateSubject';
+import GradebookListItem from './GradebookListItem';
+import QueryHandler from './QueryHandler';
 
 const styles = theme => ({
   subjects: {
@@ -33,11 +33,10 @@ class Student extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Query query={query} variables={this.props.match.params}>
-        {({ error, loading, data }) => {
-          if (loading) { return <p>Loading...</p>; }
-          if (error) { return <Errors error={error} />; }
+      <QueryHandler query={query} variables={this.props.match.params}>
+        {({ data }) => {
           const { student } = data;
+          const { subjects } = student;
           return (
             <Grid container justify="space-between">
               <Grid item xs={12}>
@@ -49,11 +48,9 @@ class Student extends Component {
                   <List
                     subheader={<ListSubheader component="div" className={classes.subheader}>Subjects</ListSubheader>}
                   >
-                    {student.subjects.map(subject =>
-                      <ListItem key={subject.id}>
-                        <ListItemText
-                          primary={subject.name}
-                        />
+                    {subjects && subjects.length ? subjects.map(item => <GradebookListItem {...item} key={item.id} />) : (
+                      <ListItem>
+                        <ListItemText secondary="None found" />
                       </ListItem>
                     )}
                   </List>
@@ -63,7 +60,7 @@ class Student extends Component {
             </Grid>
           );
         }}
-      </Query>
+      </QueryHandler>
     );
   }
 }

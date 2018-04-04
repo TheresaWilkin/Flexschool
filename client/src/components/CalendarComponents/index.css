@@ -1,0 +1,81 @@
+html, body {
+  background-color: #fdfdfd;
+}
+
+p {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.8;
+}
+
+h1, strong {
+  font-family: 'Raleway', sans-serif;
+  line-height: 2;
+}
+
+.calendar {
+  width: 100%;
+  text-align: center;
+  margin: 20px auto;
+}
+
+.week {
+  width: 100%;
+  max-width: 95%;
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-around;
+  margin: auto;
+  border-right: 1px solid #000;
+}
+
+.week:last-child {
+  border-bottom: 1px solid #000;
+}
+
+.day {
+  flex: 1;
+  text-align: center;
+  border-width: 1px 0 0px 1px;
+  border-style: solid;
+}
+
+.event {
+  margin: 5px
+}
+
+.users {
+  display: flex;
+  align-items: center;
+  max-width: 95%;
+  margin: 10px auto;
+}
+
+.user {
+  flex: 1;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.user:first-child {
+  margin: 5px 5px 5px 0px;
+}
+
+.user:last-child {
+  margin: 5px 0px 5px 5px;
+}
+
+.user:hover {
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+
+.unavailable {
+  color: lightgrey;
+  margin: 5px;
+}

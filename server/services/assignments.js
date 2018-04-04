@@ -3,6 +3,7 @@ var ObjectId = require('mongoose').Types.ObjectId
 const Assignment = mongoose.model('assignment');
 const User = mongoose.model('user');
 const Subject = mongoose.model('subject');
+const moment = require('moment');
 
 function getAssignments(subjectId) {
   return Assignment.find({ subject: new ObjectId(subjectId) })
@@ -166,6 +167,17 @@ function updateAssignment(assignment, user) {
     .catch(err => console.log(err));
 }
 
+function getAssignmentsByDate(date, user) {
+  return getAllSubjectIds(user._id)
+    .then(subjectIds => {
+      return Assignment.find({
+        subject: { $in: subjectIds },
+        dueDate: { $gte: date, $lte: new Date(moment(date).endOf('day')) }
+      }).sort('dueDate');
+    })
+    .catch(err => console.log('err', err));
+}
+
 module.exports = {
   getAssignments,
   getSchoolOverdueAssignments,
@@ -175,5 +187,6 @@ module.exports = {
   rescheduleAssignment,
   createAssignment,
   getAssignment,
-  updateAssignment
+  updateAssignment,
+  getAssignmentsByDate,
 };

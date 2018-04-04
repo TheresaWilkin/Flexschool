@@ -1,10 +1,8 @@
 import React from 'react';
-import { Query } from 'react-apollo';
 import query from '../queries/Assignment';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import { withStyles } from 'material-ui/styles';
-import Errors from './Errors';
 import Typography from 'material-ui/Typography';
 import Paper from 'material-ui/Paper';
 import AddAssignmentDialogue from './AddAssignmentDialogue';
@@ -12,6 +10,7 @@ import Button from 'material-ui/Button';
 import Icon from 'material-ui/Icon';
 import Tooltip from 'material-ui/Tooltip';
 import GradeAssignmentDialogue from './GradeAssignmentDialogue';
+import QueryHandler from './QueryHandler';
 
 const styles = theme => ({
   container: {
@@ -98,10 +97,8 @@ class Assignment extends React.Component {
   render() {
     const { classes, match } = this.props;
     return (
-      <Query query={query} variables={{ id: match.params.id }}>
-        {({ data, error, loading }) => {
-          if (error) { return <Errors error={error} />; }
-          if (loading) { return <p>Loading...</p>; }
+      <QueryHandler query={query} variables={{ id: match.params.id }}>
+        {({ data }) => {
           const { name } = data.assignment;
           return (
             <Paper className={classes.container}>
@@ -137,7 +134,7 @@ class Assignment extends React.Component {
             </Paper>
           )
         }}
-      </Query>
+      </QueryHandler>
     );
   }
 }

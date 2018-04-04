@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import query from '../queries/Dashboard';
-import { Query } from 'react-apollo';
-import Errors from './Errors';
 import Dashboard from './Dashboard';
 import Button from 'material-ui/Button';
 import { Link } from 'react-router-dom';
+import QueryHandler from './QueryHandler';
 
 const styles = theme => ({
   root: theme.mixins.gutters({
@@ -26,10 +25,8 @@ class DashboardWrapper extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Query query={query} pollInterval={500}>
-        {({ loading, error, data }) => {
-          if (loading) { return <p>Loading...</p>; }
-          if (error) { return <Errors error={error} /> }
+      <QueryHandler query={query} pollInterval={500}>
+        {({ data }) => {
           if (!data.user.students.length) {
             return (
               <Button variant="raised" color="secondary" component={Link} to="/students/new" className={classes.button}>
@@ -42,7 +39,7 @@ class DashboardWrapper extends Component {
           );
         }
       }
-      </Query>
+    </QueryHandler>
     );
   }
 }

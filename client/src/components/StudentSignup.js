@@ -19,7 +19,7 @@ class StudentSignupForm extends Component {
           <div>
             <StudentAuthForm
               onSubmit={login}
-              title="Sign up"
+              title="Add student"
               error={error}
             />
           </div>
