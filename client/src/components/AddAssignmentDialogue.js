@@ -2,20 +2,20 @@ import React from 'react';
 import { Mutation } from 'react-apollo';
 import createAssignment from '../mutations/CreateAssignment';
 import updateAssignment from '../mutations/UpdateAssignment';
-import Dashboard from '../queries/Dashboard';
-import Gradebook from '../queries/Gradebook';
 import Dialog, {
   DialogActions,
   DialogTitle,
   DialogContent,
   withMobileDialog,
 } from 'material-ui/Dialog';
+import { Link } from 'react-router-dom';
 import Button from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
 import Errors from './Errors';
 import SelectSubject from './SelectSubject';
 import moment from 'moment';
+import assignmentRefetchQueries from '../queries/assignmentRefetchQueries';
 
 const styles = theme => ({
   container: {
@@ -70,9 +70,17 @@ class AddAssignmentDialogue extends React.Component {
 
   renderSubmit() {
     const { edit, closeDialogue } = this.props;
+    let refetchQueries = [];
+    if (this.state.subject) {
+      refetchQueries = assignmentRefetchQueries(this.state.subject);
+    } else if (this.props.subject) {
+      refetchQueries = assignmentRefetchQueries(this.props.subject);
+    } else {
+      refetchQueries = assignmentRefetchQueries();
+    }
     if (edit) {
       return (
-        <Mutation mutation={updateAssignment} refetchQueries={[{ query: Gradebook }, { query: Dashboard }]}>
+        <Mutation mutation={updateAssignment} refetchQueries={refetchQueries}>
           {(updateAssignment, { loading, error }) => (
             <div>
               <Button
@@ -98,7 +106,7 @@ class AddAssignmentDialogue extends React.Component {
       );
     }
     return (
-      <Mutation mutation={createAssignment} refetchQueries={[{ query: Gradebook }, { query: Dashboard }]}>
+      <Mutation mutation={createAssignment} refetchQueries={refetchQueries}>
         {(createAssignment, { loading, error }) => (
           <div>
             <Button
@@ -128,7 +136,6 @@ class AddAssignmentDialogue extends React.Component {
         >
           <DialogTitle id="add-assignment">{edit ? 'Edit Assignment' : 'Add Assignment'}</DialogTitle>
           <DialogContent className={classes.container}>
-
             <TextField
               id="name"
               label="Name"

@@ -42,66 +42,72 @@ class More extends React.Component {
 
   render() {
     const { anchorEl } = this.state;
-    const { assignment, type } = this.props;
+    const { assignmentId, type } = this.props;
     return (
-      <div>
-        <IconButton
-          aria-owns={anchorEl ? 'simple-menu' : null}
-          aria-haspopup="true"
-          onClick={this.handleClick}
-        >
-          <Icon>more_vert</Icon>
-        </IconButton>
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={this.handleClose}
-        >
-          {type !== 'Waiting for Grading' && (
-            <MenuItem value="delete" onClick={() => this.openDialogue('delete')}>
-              Delete
-            </MenuItem>
-          )}
-          {type !== 'Waiting for Grading' && (
-            <MenuItem value="reschedule" onClick={() => this.openDialogue('reschedule')}>
-              Reschedule
-            </MenuItem>
-          )}
-          <MenuItem value="grade" onClick={() => this.openDialogue('grade')}>Grade</MenuItem>
-          <MenuItem value="copy" onClick={() => this.openDialogue('copy')}>Duplicate</MenuItem>
-        </Menu>
-        <GradeAssignmentDialogue
-          isOpen={this.state.grade}
-          closeDialogue={() => this.setState({ grade: false })}
-          assignment={assignment.id}
-          pointsAvailable={assignment.pointsAvailable}
-        />
-        <RescheduleAssignmentDialogue
-          isOpen={this.state.reschedule}
-          closeDialogue={() => this.setState({ reschedule: false })}
-          assignment={assignment.id}
-          dueDate={assignment.dueDate}
-        />
-        <DeleteAssignmentDialogue
-          isOpen={this.state.delete}
-          closeDialogue={() => this.setState({ delete: false })}
-          assignment={assignment.id}
-        />
-        <Query query={query} variables={{ id: assignment.id }}>
-          {({ loading, error, data }) => {
-            if (loading) { return <p>Loading...</p>; }
-            if (error) { return <p>Error</p>; }
-            return (
+      <Query query={query} variables={{ id: assignmentId }}>
+        {({ loading, error, data }) => {
+          if (loading) { return null }
+          if (error) { return <p>Error</p>; }
+          const { assignment } = data;
+          return (
+            <div>
+              <IconButton
+                aria-owns={anchorEl ? 'simple-menu' : null}
+                aria-haspopup="true"
+                onClick={this.handleClick}
+              >
+                <Icon>more_vert</Icon>
+              </IconButton>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={this.handleClose}
+              >
+                {type !== 'Waiting for Grading' && (
+                  <MenuItem value="delete" onClick={() => this.openDialogue('delete')}>
+                    Delete
+                  </MenuItem>
+                )}
+                {type !== 'Waiting for Grading' && (
+                  <MenuItem value="reschedule" onClick={() => this.openDialogue('reschedule')}>
+                    Reschedule
+                  </MenuItem>
+                )}
+                <MenuItem value="grade" onClick={() => this.openDialogue('grade')}>Grade</MenuItem>
+                <MenuItem value="copy" onClick={() => this.openDialogue('copy')}>Duplicate</MenuItem>
+              </Menu>
+              <GradeAssignmentDialogue
+                isOpen={this.state.grade}
+                closeDialogue={() => this.setState({ grade: false })}
+                assignment={assignment.id}
+                pointsAvailable={assignment.pointsAvailable}
+                subject={assignment.subject.id}
+              />
+              <RescheduleAssignmentDialogue
+                isOpen={this.state.reschedule}
+                closeDialogue={() => this.setState({ reschedule: false })}
+                assignment={assignment.id}
+                dueDate={assignment.dueDate}
+                subject={assignment.subject.id}
+              />
+              <DeleteAssignmentDialogue
+                isOpen={this.state.delete}
+                closeDialogue={() => this.setState({ delete: false })}
+                assignment={assignment.id}
+                subject={assignment.subject.id}
+              />
               <AddAssignmentDialogue
                 isOpen={this.state.copy}
                 closeDialogue={() => this.setState({ copy: false })}
-                assignment={data.assignment}
+                assignment={assignment}
+                subject={assignment.subject.id}
               />
-            );
-          }}
-        </Query>
-      </div>
+            </div>
+          );
+        }
+      }
+      </Query>
     );
   }
 }

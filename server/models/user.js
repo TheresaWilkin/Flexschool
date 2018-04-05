@@ -10,6 +10,7 @@ const UserSchema = new Schema({
   password: String,
   teacher: { type: Schema.Types.ObjectId, ref: 'user' },
   name: String,
+  color: String,
 });
 
 // The user's password is never saved in plain text.  Prior to saving the

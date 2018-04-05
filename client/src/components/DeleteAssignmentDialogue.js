@@ -1,18 +1,18 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import deleteAssignment from '../mutations/DeleteAssignment';
-import Dashboard from '../queries/Dashboard';
-import Gradebook from '../queries/Gradebook';
 import Dialog, {
   DialogActions,
   DialogTitle,
   withMobileDialog,
 } from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
+import assignmentRefetchQueries from '../queries/assignmentRefetchQueries';
 
 class DeleteAssignmentDialogue extends React.Component {
   render() {
-    const { isOpen, closeDialogue, assignment, fullScreen } = this.props;
+    const { isOpen, closeDialogue, assignment, fullScreen, subject } = this.props;
+    const refetchQueries = assignmentRefetchQueries(subject);
     return (
         <Dialog
           fullScreen={fullScreen}
@@ -25,7 +25,7 @@ class DeleteAssignmentDialogue extends React.Component {
             <Button onClick={closeDialogue} color="default">
               Cancel
             </Button>
-            <Mutation mutation={deleteAssignment} refetchQueries={[{ query: Gradebook }, { query: Dashboard }]}>
+            <Mutation mutation={deleteAssignment} refetchQueries={refetchQueries}>
               {(deleteAssignment, { loading, error }) => (
                 <Button
                   variant="raised"

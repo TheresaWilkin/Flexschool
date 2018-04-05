@@ -1,7 +1,18 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import Event from './Event';
+import { withStyles } from 'material-ui/styles';
 import './index.css';
+import Grid from 'material-ui/Grid';
+import Paper from 'material-ui/Paper';
+
+const styles = theme => ({
+  paper: {
+      padding: theme.spacing.unit,
+      height: '100%',
+      textAlign: 'center'
+    },
+});
 
 export function Unavailable({children}) {
   return <p className="unavailable">{children}</p>
@@ -9,29 +20,22 @@ export function Unavailable({children}) {
 
 class Day extends Component {
   renderEvents(events) {
-      return events.map(event => <Event key={event.id} event={event} user={{
-        firstName: 'Alice',
-        id: 1,
-        color: "lightpink",
-        shadow: "0px 5px 0px 0px #cc7c89",
-        hidden: false,
-      }}/>)
+      const { hiddenStudents, day } = this.props;
+      return day.assignments.map(event => <Event key={event.id} event={event} hiddenStudents={hiddenStudents} />)
   }
 
   render(){
-    const { date, assignments } = this.props.day;
+    const { day, classes } = this.props;
+    const { date } = day;
     return(
-      <div className="day">
-        <strong>{moment(date).format('ddd, MMM DD')}</strong>
-        {this.renderEvents(assignments)}
-      </div>
+      <Grid item xs>
+        <Paper className={classes.paper}>
+          <strong>{moment(date).format('ddd, MMM DD')}</strong>
+          {this.renderEvents()}
+        </Paper>
+      </Grid>
     );
   }
 }
 
-function mapStateToProps({state}) {
-  const { today, eventsByDate, users } = state;
-  return { today, eventsByDate, users }
-}
-
-export default Day;
+export default withStyles(styles)(Day);

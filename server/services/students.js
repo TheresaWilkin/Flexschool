@@ -29,5 +29,23 @@ function signupStudent({ email, password, name }, req) {
     })
 }
 
+function assignColor({ color, id }, user) {
+  return getStudent(id)
+    .then(student => {
+      if (student.teacher.toString() != user._id) {
+        throw new Error('You are not the teacher for this assignment.');
+      }
+      return User.update({ _id: new ObjectId(id) }, { $set: { color: color } })
+    })
+    .then(() => {
+      return User.findOne({ _id: new ObjectId(id) });
+    })
+    .then(res => {
+      console.log(res)
+      return res
+    })
+    .catch(err => console.log(err));
+}
 
-module.exports = { getStudents, getStudent, signupStudent };
+
+module.exports = { getStudents, getStudent, signupStudent, assignColor };

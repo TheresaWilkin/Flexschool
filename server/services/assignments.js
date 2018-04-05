@@ -120,15 +120,22 @@ function rescheduleAssignment({ dueDate, assignment }, user) {
 }
 
 function deleteAssignment({ assignment }, user) {
+  console.log(assignment);
   return findAssignmentStudent(assignment)
     .then(student => {
+      console.log(student)
       if (student.teacher.toString() != user._id) {
         throw new Error('You are not the teacher for this assignment.');
       }
       return Assignment.remove({ _id: new ObjectId(assignment) })
     })
-    .then(() => {
+    .then((res) => {
+      console.log('deleted', res)
       return Assignment.findOne({ _id: new ObjectId(assignment) });
+    })
+    .then(res => {
+      console.log('response', res)
+      return res;
     })
     .catch(err => console.log(err));
 }
@@ -189,4 +196,5 @@ module.exports = {
   getAssignment,
   updateAssignment,
   getAssignmentsByDate,
+  deleteAssignment
 };

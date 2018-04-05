@@ -13,6 +13,7 @@ import Paper from 'material-ui/Paper';
 import CreateSubject from './CreateSubject';
 import GradebookListItem from './GradebookListItem';
 import QueryHandler from './QueryHandler';
+import ColorSelect from './ColorSelect';
 
 const styles = theme => ({
   subjects: {
@@ -56,6 +57,9 @@ class Student extends Component {
                   </List>
                   <CreateSubject />
                 </Paper>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <ColorSelect color={student.color} id={student.id} />
               </Grid>
             </Grid>
           );

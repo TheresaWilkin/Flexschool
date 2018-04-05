@@ -13,20 +13,29 @@ export default gql`
         name
         dueDate
         pointsAvailable
-        student
+        student {
+          id
+          name
+        }
       }
       allNeedGrading {
         id
         name
         pointsAvailable
-        student
+        student {
+          id
+          name
+        }
       }
       allUpcoming {
         id
         name
         dueDate
         pointsAvailable
-        student
+        student {
+          id
+          name
+        }
       }
     }
   }

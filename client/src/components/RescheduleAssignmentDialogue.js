@@ -1,8 +1,6 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import rescheduleAssignment from '../mutations/RescheduleAssignment';
-import Dashboard from '../queries/Dashboard';
-import Gradebook from '../queries/Gradebook';
 import Dialog, {
   DialogActions,
   DialogContent,
@@ -13,6 +11,7 @@ import Button from 'material-ui/Button';
 import DateAndTimePicker from './DateAndTimePicker';
 import moment from 'moment';
 import Errors from './Errors';
+import assignmentRefetchQueries from '../queries/assignmentRefetchQueries';
 
 class RescheduleAssignmentDialogue extends React.Component {
   state = {
@@ -24,7 +23,8 @@ class RescheduleAssignmentDialogue extends React.Component {
   }
 
   render() {
-    const { isOpen, closeDialogue, assignment, fullScreen } = this.props;
+    const { isOpen, closeDialogue, assignment, fullScreen, subject } = this.props;
+    const refetchQueries = assignmentRefetchQueries(subject);
     const { dueDate } = this.state;
     return (
         <Dialog
@@ -45,7 +45,7 @@ class RescheduleAssignmentDialogue extends React.Component {
             <Button onClick={closeDialogue} color="default">
               Cancel
             </Button>
-            <Mutation mutation={rescheduleAssignment} refetchQueries={[{ query: Gradebook }, { query: Dashboard }]}>
+            <Mutation mutation={rescheduleAssignment} refetchQueries={refetchQueries}>
               {(rescheduleAssignment, { loading, error }) => (
                 <div>
                   <Button

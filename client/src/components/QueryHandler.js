@@ -10,7 +10,10 @@ class QueryHandler extends Component {
         {(queryResults) => {
           const { error, loading } = queryResults;
           if (loading) { return <Loading />; }
-          if (error) { return <Errors error={error} />; }
+          if (error) {
+            console.error(error)
+            return <Errors error={error} />;
+          }
           return this.props.children(queryResults);
         }}
       </Query>

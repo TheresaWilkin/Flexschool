@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  mutation GradeAssignment($assignment: ID) {
-    gradeAssignment(assignment: $assignment) {
+  mutation DeleteAssignment($assignment: ID) {
+    deleteAssignment(assignment: $assignment) {
       id
     }
   }

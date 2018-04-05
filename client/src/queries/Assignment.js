@@ -17,6 +17,7 @@ export default gql`
         student {
           id
           name
+          color
         }
       }
     }

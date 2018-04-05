@@ -17,6 +17,10 @@ export default gql`
         pointsEarned
         pointsAvailable
         graded
+        submitted
+        student {
+          id
+        }
       }
     }
   }

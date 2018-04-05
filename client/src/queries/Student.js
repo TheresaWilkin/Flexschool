@@ -6,6 +6,7 @@ export default gql`
       id
       name
       username
+      color
       subjects {
         id
         name

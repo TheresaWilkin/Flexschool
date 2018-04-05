@@ -29,7 +29,7 @@ const SubjectType = new GraphQLObjectType({
       }
     },
     student: {
-      type: require('./user_type'),
+      type: require('./student_type'),
       resolve(parentValue, args) {
         return Students.getStudent(parentValue.student)
       }
@@ -37,6 +37,7 @@ const SubjectType = new GraphQLObjectType({
     assignments: {
       type: GraphQLList(require('./assignment_type')),
       resolve(parentValue, args) {
+        console.log(parentValue, args)
         return Assignments.getAssignments(parentValue._id);
       }
     }

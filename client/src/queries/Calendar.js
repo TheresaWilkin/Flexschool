@@ -11,6 +11,12 @@ export default gql`
           id
           name
           dueDate
+          graded
+          student {
+            id
+            name
+            color
+          }
         }
       }
     }

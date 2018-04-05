@@ -131,6 +131,16 @@ const mutation = new GraphQLObjectType({
         return Subjects.createSubject(args, req)
           .catch(e => console.log(e))
       }
+    },
+    assignColor: {
+      type: StudentType,
+      args: {
+        id: { type: GraphQLID },
+        color: { type: GraphQLString },
+      },
+      resolve(parentValue, args, req) {
+        return Students.assignColor(args, req.user);
+      }
     }
   })
 });

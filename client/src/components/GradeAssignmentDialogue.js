@@ -1,8 +1,6 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import gradeAssignment from '../mutations/GradeAssignment';
-import Dashboard from '../queries/Dashboard';
-import Gradebook from '../queries/Gradebook';
 import Dialog, {
   DialogActions,
   DialogContent,
@@ -13,6 +11,7 @@ import Button from 'material-ui/Button';
 import Slider from 'react-rangeslider'
 import 'react-rangeslider/lib/index.css'
 import Errors from './Errors';
+import assignmentRefetchQueries from '../queries/assignmentRefetchQueries';
 
 const labels = {
     0: 'F',
@@ -32,10 +31,11 @@ class GradeAssignmentDialogue extends React.Component {
   }
 
   render() {
-    const { isOpen, closeDialogue, assignment, pointsAvailable, fullScreen } = this.props;
+    const { isOpen, closeDialogue, assignment, pointsAvailable, fullScreen, subject } = this.props;
     const { percentage } = this.state;
     const pointsEarned = Math.floor(pointsAvailable * percentage / 100);
     const title = <span style={{ display: 'inline-block', width: '250px'}}>Grade Assignment: {percentage}%</span>;
+    const refetchQueries = assignmentRefetchQueries(subject);
     return (
         <Dialog
           fullScreen={fullScreen}
@@ -59,7 +59,7 @@ class GradeAssignmentDialogue extends React.Component {
             <Button onClick={closeDialogue} color="default">
               Cancel
             </Button>
-            <Mutation mutation={gradeAssignment} refetchQueries={[{ query: Gradebook }, { query: Dashboard }]}>
+            <Mutation mutation={gradeAssignment} refetchQueries={refetchQueries}>
               {(gradeAssignment, { loading, error }) => (
                 <div>
                   <Button

@@ -10,7 +10,10 @@ const {
 var GraphQLDate = require('graphql-date')
 
 const SubjectType = require('./subject_type');
+const StudentType = require('./student_type');
+
 const Subjects = require('../../services/subjects');
+const Students = require('../../services/students');
 
 const AssignmentType = new GraphQLObjectType({
   name: 'AssignmentType',
@@ -30,9 +33,12 @@ const AssignmentType = new GraphQLObjectType({
     dueDate: { type: GraphQLDate },
     graded: { type: GraphQLBoolean },
     student: {
-      type: GraphQLID,
+      type: StudentType,
       resolve(parentValue, args, req) {
-        return Subjects.getStudent(parentValue.subject);
+        return Subjects.getStudent(parentValue.subject)
+          .then(id => {
+            return Students.getStudent(id);
+          });
       }
     }
   })

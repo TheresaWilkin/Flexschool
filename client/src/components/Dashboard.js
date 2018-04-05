@@ -30,14 +30,23 @@ class Dashboard extends Component {
   state = {
     student: ''
   }
+
+  renderSecondaryText({ dueDate, student }, type) {
+    if (type === 'Waiting for Grading') {
+      return `submitted by ${student.name}`;
+    } else {
+      return `due ${moment(dueDate).fromNow()} - ${student.name}`;
+    }
+  }
+
   renderListItem(assignment, type) {
-    const { id, name, dueDate } = assignment;
-    const secondary = type !== 'Waiting for Grading' ? moment(dueDate).fromNow() : '';
+    const { id, name } = assignment;
+    const secondary = this.renderSecondaryText(assignment, type);
     return (
       <ListItem button component={Link} to={`/assignments/${id}`} key={id}>
         <ListItemText primary={name} secondary={secondary} />
         <ListItemSecondaryAction>
-          <More assignment={assignment} type={type} />
+          <More assignmentId={id} type={type} />
         </ListItemSecondaryAction>
       </ListItem>
     );
@@ -45,7 +54,7 @@ class Dashboard extends Component {
 
   renderList(title, items) {
     const { classes } = this.props;
-    const itemsList = this.state.student ? items.filter(item => item.student === this.state.student) : items;
+    const itemsList = this.state.student ? items.filter(item => item.student.id === this.state.student) : items;
     return (
       <Grid item xs={12} sm={4}>
         <Paper className={classes.root} elevation={4}>

@@ -28,7 +28,8 @@ const StudentType = new GraphQLObjectType({
       resolve(parentValue, args) {
         return Subjects.getSubjects(parentValue._id);
       }
-    }
+    },
+    color: { type: GraphQLString },
   })
 });
 
