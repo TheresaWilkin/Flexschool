@@ -8,7 +8,6 @@ import Dialog, {
   DialogContent,
   withMobileDialog,
 } from 'material-ui/Dialog';
-import { Link } from 'react-router-dom';
 import Button from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';

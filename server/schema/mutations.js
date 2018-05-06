@@ -13,11 +13,13 @@ const UserType = require('./types/user_type');
 const AssignmentType = require('./types/assignment_type');
 const StudentType = require('./types/student_type');
 const SubjectType = require('./types/subject_type');
+const FeedbackType = require('./types/feedback_type');
 
 const AuthService = require('../services/auth');
 const Assignments = require('../services/assignments');
 const Students = require('../services/students');
 const Subjects = require('../services/subjects');
+const Feedbacks = require('../services/feedbacks');
 
 const AssignmentInput = new GraphQLInputObjectType({
   name: 'Assignment',
@@ -141,7 +143,16 @@ const mutation = new GraphQLObjectType({
       resolve(parentValue, args, req) {
         return Students.assignColor(args, req.user);
       }
-    }
+    },
+    createFeedback: {
+      type: FeedbackType,
+      args: {
+        feedback: { type: GraphQLString },
+      },
+      resolve(parentValue, { feedback }, req) {
+        return Feedbacks.createFeedback(feedback, req.user);
+      }
+    },
   })
 });
 

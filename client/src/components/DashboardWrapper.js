@@ -27,7 +27,7 @@ class DashboardWrapper extends Component {
     return (
       <QueryHandler query={query} pollInterval={500}>
         {({ data }) => {
-          if (!data.user.students.length) {
+          if (!data.user || !data.user.students || !data.user.students.length) {
             return (
               <Button variant="raised" color="secondary" component={Link} to="/students/new" className={classes.button}>
                 Add Students

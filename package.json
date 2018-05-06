@@ -19,6 +19,7 @@
     "jwt-decode": "^2.2.0",
     "moment": "^2.21.0",
     "mongoose": "^5.0.12",
+    "nodemailer": "^4.6.4",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "react-rangeslider": "^2.2.0"
