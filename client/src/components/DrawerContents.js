@@ -70,6 +70,12 @@ class ResponsiveDrawer extends React.Component {
                 {this.state.openStudents ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
               <Students open={this.state.openStudents} students={user.students} />
+              <ListItem button component={Link} to="/courses">
+                <ListItemIcon>
+                  <Icon>library_books</Icon>
+                </ListItemIcon>
+                <ListItemText primary="Courses" />
+              </ListItem>
             </List>
             <Divider />
             <List>

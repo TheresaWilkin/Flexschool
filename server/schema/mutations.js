@@ -5,7 +5,8 @@ const {
   GraphQLInt,
   GraphQLID,
   GraphQLInputObjectType,
-  GraphQLBoolean
+  GraphQLBoolean,
+  GraphQLList,
 } = graphql;
 var GraphQLDate = require('graphql-date')
 
@@ -14,12 +15,20 @@ const AssignmentType = require('./types/assignment_type');
 const StudentType = require('./types/student_type');
 const SubjectType = require('./types/subject_type');
 const FeedbackType = require('./types/feedback_type');
+const CourseType = require('./types/course_type');
+const TermType = require('./types/term_type');
+const WeekType = require('./types/week_type');
+const ResourceType = require('./types/resource_type');
+const WeeklyTaskType = require('./types/weekly_task_type');
+const WeekWeeklyTaskType = require('./types/week_weekly_task_type');
+const WeekResourceType = require('./types/week_resource_type');
 
 const AuthService = require('../services/auth');
 const Assignments = require('../services/assignments');
 const Students = require('../services/students');
 const Subjects = require('../services/subjects');
 const Feedbacks = require('../services/feedbacks');
+const Terms = require('../services/terms');
 
 const AssignmentInput = new GraphQLInputObjectType({
   name: 'Assignment',
@@ -153,6 +162,112 @@ const mutation = new GraphQLObjectType({
         return Feedbacks.createFeedback(feedback, req.user);
       }
     },
+    createCourse: {
+      type: CourseType,
+      args: {
+        name: { type: GraphQLString },
+      },
+      resolve(parentValue, { name }, req) {
+        return Terms.createCourse(name, req.user);
+      }
+    },
+    deleteCourse: {
+      type: CourseType,
+      args: {
+        course: { type: GraphQLID },
+      },
+      resolve(parentValue, { course }, req) {
+        return Terms.deleteCourse(course, req.user);
+      }
+    },
+    createTerm: {
+      type: TermType,
+      args: {
+        id: { type: GraphQLID },
+        name: { type: GraphQLString },
+        course: { type: GraphQLID },
+        order: { type: GraphQLInt },
+        start: { type: GraphQLDate },
+        end: { type: GraphQLDate },
+        vacations: { type: GraphQLList(GraphQLDate) },
+        schooldays: { type: GraphQLList(GraphQLString) },
+      },
+      resolve(parentValue, args, req) {
+        return Terms.createTerm(args, req.user);
+      }
+    },
+    deleteTerm: {
+      type: TermType,
+      args: {
+        term: { type: GraphQLID },
+      },
+      resolve(parentValue, { term }, req) {
+        return Terms.deleteTerm(term, req.user);
+      }
+    },
+    reorderTerms: {
+      type: GraphQLList(TermType),
+      args: {
+        terms: { type: GraphQLList(GraphQLID) },
+      },
+      resolve(parentValue, { terms }, req) {
+        return Terms.reorderTerms(terms, req.user);
+      }
+    },
+    createWeeksForTerm: {
+      type: GraphQLList(WeekType),
+      args: {
+        term: { type: GraphQLID },
+      },
+      resolve(parentValue, { term }, req) {
+        return Terms.createWeeksForTerm(term, req.user);
+      }
+    },
+    createResource: {
+      type: ResourceType,
+      args: {
+        title: { type: GraphQLString },
+        terms: { type: GraphQLList(GraphQLID) },
+        parts: { type: GraphQLInt },
+        partsType: { type: GraphQLString },
+        partDuration: { type: GraphQLInt },
+        course: { type: GraphQLID },
+      },
+      resolve(parentValue, args, req) {
+        return Terms.createResource(args, req.user);
+      }
+    },
+    createWeeklyTask: {
+      type: WeeklyTaskType,
+      args: {
+        title: { type: GraphQLString },
+        terms: { type: GraphQLList(GraphQLID) },
+        partDuration: { type: GraphQLInt },
+        course: { type: GraphQLID },
+        days: { type: GraphQLList(GraphQLString) },
+      },
+      resolve(parentValue, args, req) {
+        return Terms.createWeeklyTask(args, req.user);
+      }
+    },
+    scheduleWeeklyTasksForTerm: {
+      type: GraphQLList(WeekWeeklyTaskType),
+      args: {
+        term: { type: GraphQLID },
+      },
+      resolve(parentValue, { term }, req) {
+        return Terms.scheduleWeeklyTasksForTerm(term, req.user);
+      }
+    },
+    scheduleResourcesForTerm: {
+      type: GraphQLList(WeekResourceType),
+      args: {
+        term: { type: GraphQLID },
+      },
+      resolve(parentValue, { term }, req) {
+        return Terms.scheduleResourcesForTerm(term, req.user);
+      }
+    }
   })
 });
 

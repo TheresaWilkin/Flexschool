@@ -12,6 +12,7 @@ import Assignment from './Assignment';
 import Student from './Student';
 import GradebookSubject from './GradebookSubject';
 import Calendar from './Calendar';
+import Courses from './Courses';
 import Feedback from './Feedback';
 
 const Filler = () => <p>Filler</p>;
@@ -33,6 +34,7 @@ class ResponsiveDrawer extends React.Component {
           <Route exact path="/gradebook/subjects/:id" component={GradebookSubject} />
           <Route exact path="/subjects/:id" component={Filler} />
           <Route exact path="/calendar" component={Calendar} />
+          <Route exact path="/courses" component={Courses} />
         </Switch>
       </AppWrapper>
     );

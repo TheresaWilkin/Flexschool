@@ -9,12 +9,14 @@ const SubjectType = require('./subject_type');
 const DayType = require('./day_type');
 const CalendarType = require('./calendar_type');
 const FeedbackType = require('./feedback_type');
+const CourseType = require('./course_type');
 
 const Assignments = require('../../services/assignments');
 const Students = require('../../services/students');
 const Subjects = require('../../services/subjects');
 const Dates = require('../../services/dates');
 const Feedbacks = require('../../services/feedbacks');
+const Terms = require('../../services/terms');
 
 const RootQueryType = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -76,6 +78,12 @@ const RootQueryType = new GraphQLObjectType({
       type: new GraphQLList(FeedbackType),
       resolve(parentValue, args, req) {
         return Feedbacks.getFeedbacks(req.user);
+      }
+    },
+    courses: {
+      type: new GraphQLList(CourseType),
+      resolve(parentValue, args, req) {
+        return Terms.getCoursesTaught(req.user);
       }
     }
   })
